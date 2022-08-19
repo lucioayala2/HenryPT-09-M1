@@ -11,9 +11,73 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
 
-function LinkedList() {}
+// function LinkedList(){
 
-function Node(value) {}
+//   }
+
+// function Node(value){
+
+// }
+// Lo hace con clase y hastable con function
+class LinkedList{
+  constructor(){
+    this.head = null;
+  }
+  add(value){
+    let nodo = new Node(value);
+    let current = this.head;
+    if (!current){ //si la lista está vacia
+      this.head = nodo;
+      return nodo;
+    }//si hay nodos, recorremos hasta el ultimo
+    while(current.next){
+      current = current.next;
+    }
+    current.next = nodo;
+    return nodo;
+  }
+
+  remove(){
+    //si está vacia
+    if(!this.head) return null;
+    //si tiene un elemento
+    if (this.head && !this.head.next){
+      let rmNode = this.head;
+      this.head = null;
+      return rmNode.value;
+    }
+    //Si tiene muchos valores
+    let current = this.head;
+    while(current.next.next){
+      current = current.next;
+    }
+    let rmNode = current.next;
+    current.next = null;
+    return rmNode.value;
+  }
+  search(value){
+    if (!this.head) return null;
+    let current = this.head;
+    while(current){
+      if(current.value === value) return current.value;
+      else if (typeof value === 'function'){
+        if (value(current.value)) return current.value;
+      }
+      current = current.next;
+    }
+    return null;
+  }
+  }
+
+
+class Node{
+  constructor(value){
+    this.value = value;
+    this.next = null;
+  }
+}
+
+
 
 /*
 Implementar la clase HashTable.
@@ -30,7 +94,40 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+  //arreglo de objetos
+  this.numBuckets = 35;
+  this.buckets = [];
+}
+
+HashTable.prototype.hash = function(key){
+  let sum = 0;
+  for (let i=0;i < key.length;i++){
+    sum += key.charCodeAt(i); 
+  }
+  return sum % this.numBuckets;
+
+};
+HashTable.prototype.set = function(key, value){
+  if (typeof key !== 'string') throw new TypeError('Keys must be strings');
+
+  let posArr = this.hash(key);
+  //si la pos en el arreglo está vacia, crea un obj para guardar los valores
+  if (this.buckets[posArr] === undefined){
+    this.buckets[posArr] = {};
+  }
+  this.buckets[posArr][key] = value;
+};
+HashTable.prototype.get = function(key){
+  let posArr = this.hash(key);
+  return this.buckets[posArr][key];
+};
+HashTable.prototype.hasKey = function(key){
+  let posArr = this.hash(key);
+  return this.buckets[posArr].hasOwnProperty(key);
+};
+
+
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------

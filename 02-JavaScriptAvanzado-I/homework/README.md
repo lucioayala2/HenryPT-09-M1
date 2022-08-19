@@ -153,7 +153,7 @@ console.log(obj.prop.getFullname());//Aurelio De Rosa, ya que en el contexto de 
 
 var test = obj.prop.getFullname;
 
-console.log(test()); // Juan Perez, en este caso el entorno es global y this toma Juan Perez
+console.log(test()); // undefined
 ```
 
 ### Event loop

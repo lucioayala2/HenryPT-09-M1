@@ -15,9 +15,14 @@ Como ejercicio adicional y completamente opcional, al terminar de resolver este 
 */
 
 function nFactorial(n) {
+  var total = 0;
+  if (n <= 1) return 1;
+  return n * nFactorial(n - 1);
 }
 
 function nFibonacci(n) {
+  if (n <= 1) return n;
+  return nFibonacci(n-1) + nFibonacci(n-2);
 }
 
 /*
@@ -28,9 +33,61 @@ Implementar la clase Queue, sabiendo que es una estructura de tipo FIFO, donde e
 
 Pueden utilizar class o función constructora.
 */
+class Nodo{
+  constructor(value){
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class Queue{
+  constructor(){
+    this.first = null;
+    this.last = null;
+    this.length = 0;
+  }
+  enqueue(value){
+    let nodo = new Nodo(value);
+    if (this.first){
+      this.last.next = nodo;
+      this.last = nodo;
+    } else {
+      this.first = nodo;
+      this.last = nodo;
+    }
+
+    this.length++;
+  }
+
+  dequeue(){
+    if(this.first === null){
+      return undefined;
+    }
+    let current = this.first;
+    this.first = this.first.next;
+    this.length--;
+
+    return current.value;
+  }
+
+  size(){
+    return this.length;
+  }
+}
 
 function Queue() {
+  this.arr = [];
+  this.enqueue = function(data){ //una forma
+      this.arr.push(data);
+  } 
+}
+var que2 = new Queue;
 
+Queue.prototype.dequeue = function(){
+  return this.arr.shift();
+} // Otra forma - Prototype es donde se guardan las funciones de un objeto (Queue en este caso)
+Queue.prototype.size = function(){
+  return this.arr.length;
 }
 
 // No modifiquen nada debajo de esta linea
